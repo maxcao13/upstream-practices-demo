@@ -50,8 +50,8 @@ pull_request_rules:
       - base=main
     actions:
       dismiss_reviews:
-        approved: [ 'mergify', 'Mergifyio' ]
-        changes_requested: [ 'mergify', 'Mergifyio' ]
+        approved: from_requested_reviewers
+        changes_requested: from_requested_reviewers
 
   - name: block pull requests that manually update web-client submodule
     conditions:
