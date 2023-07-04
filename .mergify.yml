@@ -14,7 +14,7 @@ pull_request_rules:
     conditions:
       - label=ready-for-review
     actions:
-      request-reviews:
+      request_reviews:
         users:
           - maxcao13
 
