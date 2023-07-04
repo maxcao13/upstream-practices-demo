@@ -1,6 +1,6 @@
 # getting-started
 
-SOME CHANGE 5
+SOME CHANGE 6
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
