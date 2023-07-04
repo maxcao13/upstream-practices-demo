@@ -1,0 +1,34 @@
+name: Auto build and test
+
+concurrency:
+  group: ci-${{ github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+    branches:
+      - main
+
+jobs:
+  auto-build-and-test:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'auto-build-test') }}
+    steps:
+      - name: Build preview image
+        id: build-image
+        run: echo "tag=quay.io/macao/demo:latest" >> $GITHUB_OUTPUT
+      - name: Print the preview image
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |-
+            Preview image available:
+            ```
+            ${{ steps.build-image.outputs.tag }}
+            ```
+      - name: Run tests
+        run: echo "Running tests"
