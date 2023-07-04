@@ -17,6 +17,8 @@ pull_request_rules:
       request_reviews:
         users:
           - maxcao13
+      comment: 
+        message: This pull request is ready for review. @maxcao13
 
   - name: remove ready-for-review label
     conditions:
@@ -52,6 +54,9 @@ pull_request_rules:
       dismiss_reviews:
         approved: from_requested_reviewers
         changes_requested: from_requested_reviewers
+        message: |
+          Pull request has been modified.
+          Please apply the `ready-for-review` label again, or re-request reviews individually to notify us of your changes.
 
   - name: block pull requests that manually update web-client submodule
     conditions:
