@@ -20,7 +20,7 @@ pull_request_rules:
 
   - name: say hi to contributors if they are not part of the reviewers team
     conditions:
-      - author!=@reviewers
+      - author!=maxcao13
     actions:
         comment:
           message: |
@@ -29,7 +29,7 @@ pull_request_rules:
 
   - name: auto label PRs from reviewers
     conditions:
-      - author=@reviewers
+      - author=maxcao13
     actions:
       label:
         add:
