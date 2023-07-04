@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "maxcao13"
+      - "tthvo"
+    labels:
+      - "dependencies"
+      - "chore"
+      - "auto-build-test"
+    open-pull-requests-limit: 10
+
