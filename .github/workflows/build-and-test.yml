@@ -1,18 +1,56 @@
-name: Build and Test
+name: PR Command
 
 concurrency:
   group: ci-${{ github.run_id }}
   cancel-in-progress: true
 
 on:
-  push:
-    branches:
-      - main
-      - v[0-9]+
-      - v[0-9]+.[0-9]+
-      - cryostat-v[0-9]+.[0-9]+
   issue_comment:
 
 jobs:
-  testin:
+  tag-reviewer:
     runs-on: ubuntu-latest
+    if: startsWith(github.event.comment.body, '/review')
+    steps:
+      - name: Command handler for tagging reviewers
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: review
+          reaction: "true"
+          reaction-type: "+1"
+          allow-edits: "false"
+          permission-level: write
+      - name: Tag reviewer
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |-
+            Hi, @maxcao13, your reviews are requested.
+  build-and-test:
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.comment.body, '/build-test') && 
+    steps:
+      - name:  Command handler for building and testing
+        id: command
+        uses: xt0rted/slash-command-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          command: build-test
+          reaction: "true"
+          reaction-type: "+1"
+          allow-edits: "false"
+          permission-level: write
+      - name: Build preview image
+        id: build-image
+        run: echo "tag=quay.io/macao/demo:latest" >> $GITHUB_OUTPUT
+      - name: Print the preview image
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |-
+            Preview image available:
+            ```
+            ${{ steps.build-image.outputs.tag }}
+            ```
+      - name: Run tests
+        run: echo "Running tests"
