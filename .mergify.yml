@@ -46,7 +46,7 @@ pull_request_rules:
     actions:
       label:
         add:
-          - safe-to-test
+          - auto-build-test
 
   - name: dismiss stale reviews
     conditions:

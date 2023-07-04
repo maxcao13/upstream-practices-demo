@@ -28,6 +28,17 @@ jobs:
         with:
           message: |-
             Hi, @maxcao13, your reviews are requested.
+      - name: Label ready-for-review
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['ready-for-review']
+            })
+      
   build-and-test:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '/build_test') }}
