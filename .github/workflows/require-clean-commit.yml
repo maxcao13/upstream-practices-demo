@@ -1,0 +1,39 @@
+name: Require cleaning up PR commits
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  pull-requests: write
+
+jobs:
+  request-cleanup:
+    if: ${{ github.event.label.name == 'clean-commit-required' && github.event.pull_request.commits > 1  }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Request author to squash commits
+      uses: thollander/actions-comment-pull-request@v1
+      with:
+        message: |-
+          Please clean up PR commit history by squashing into a single commit.
+
+          Example:
+
+          ```bash
+          $ git reset ${{ github.base_ref }}
+          $ git add --all
+          $ git commit -m '${{ github.event.pull_request.title }}'
+          ```
+  remove-request-label:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'clean-commit-required') && github.event.pull_request.commits == 1 }}
+    steps:
+      - name: Remove label clean-commit-required
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: clean-commit-required
