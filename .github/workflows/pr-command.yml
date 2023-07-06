@@ -23,11 +23,6 @@ jobs:
           reaction-type: "+1"
           allow-edits: "false"
           permission-level: write
-      - name: Tag reviewer
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: |-
-            Hi, @maxcao13, your reviews are requested.
       - name: Label ready-for-review
         uses: actions/github-script@v6
         with:
